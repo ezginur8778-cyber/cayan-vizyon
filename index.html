@@ -174,15 +174,11 @@ function showCategory(category,button){
  });
  document.getElementById('search').value='';
 }
+
 function details(title,description,genre,platform){
- document.getElementById('detailTitle').innerText=title;
- document.getElementById('detailDescription').innerText=description;
- document.getElementById('detailGenre').innerText='Tür: '+genre;
- document.getElementById('detailPlatform').innerText='İzleme rehberi: '+platform;
- document.getElementById('trailer').href='https://www.youtube.com/results?search_query='+encodeURIComponent(title+' official trailer');
- document.getElementById('details').hidden=false;
- document.getElementById('details').scrollIntoView({behavior:'smooth'});
+  window.location.href='detay.html?dizi='+encodeURIComponent(title);
 }
+
 function closeDetails(){
  document.getElementById('details').hidden=true;
 }
