@@ -70,9 +70,14 @@ document.getElementById('summary').textContent=(show.summary||'Dizi özeti henü
 document.getElementById('genre').textContent='Tür: '+(show.genres||[]).join(', ');
 document.getElementById('date').textContent='Başlangıç: '+(show.premiered||'Bilinmiyor');
 document.getElementById('status').textContent='Durum: '+(show.status||'Bilinmiyor');
-if(show.image){
-document.getElementById('poster').src=show.image.original||show.image.medium;
-}else{
+const poster=document.getElementById('poster');
+
+poster.src=show.image?.original || show.image?.medium || '';
+poster.style.display=poster.src ? 'block' : 'none';
+
+poster.onerror=function(){
+  this.style.display='none';
+};
 document.getElementById('poster').alt='Afiş bulunamadı';
 }
 const cast=show._embedded?.cast||[];
