@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lina AI LIVE</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;background:#11111b;color:white;
+ font-family:Arial,sans-serif;padding:18px
+}
+.app{max-width:600px;margin:auto}
+h1{text-align:center;color:#ff83bd}
+.card{
+ background:#222235;border-radius:18px;
+ padding:18px;margin:14px 0
+}
+.avatar{
+ width:125px;height:125px;border-radius:50%;
+ margin:auto;background:linear-gradient(135deg,#fa75b5,#7755d9);
+ display:flex;align-items:center;justify-content:center;
+ font-size:65px
+}
+button{
+ border:0;border-radius:12px;padding:14px;
+ font-weight:bold;background:#ff65aa;color:white;
+ width:100%;margin-top:10px;font-size:15px
+}
+button:disabled{opacity:.5}
+input,select{
+ width:100%;padding:13px;margin-top:8px;
+ border-radius:10px;border:0;background:#34344a;color:white
+}
+#chat{
+ height:190px;overflow:auto;background:#151521;
+ padding:12px;border-radius:12px
+}
+.message{padding:8px;margin:6px 0;background:#34344a;border-radius:8px}
+.small{color:#bbb;font-size:13px;text-align:center}
+</style>
+</head>
+<body>
+<div class="app">
+<h1>🌸 LINA AI LIVE</h1>
+
+<div class="card" style="text-align:center">
+ <div class="avatar">👩🏻</div>
+ <h2>Lina</h2>
+ <p class="small">Yapay Zekâ Canlı Yayın Asistanı</p>
+ <p id="status">● Sistem hazır</p>
+</div>
+
+<div class="card">
+ <h3>🎙️ Ses Ayarları</h3>
+ <select id="voices"></select>
+ <button onclick="testVoice()">Lina'nın Sesini Dene</button>
+</div>
+
+<div class="card">
+ <h3>💬 Lina ile Sohbet</h3>
+ <div id="chat">
+ <div class="message">Lina: Merhaba! Ben Lina. Canlı yayına hazırız! 💗</div>
+ </div>
+ <input id="topic" placeholder="Lina'ya bir konu yaz...">
+ <button onclick="sendMessage()">Gönder</button>
+ <button onclick="listen()" style="background:#7555d9">🎤 Sesli Konuş</button>
+</div>
+
+<div class="card">
+ <h3>✨ Yayın Kontrolü</h3>
+ <button onclick="startLive()">Lina'yı Başlat</button>
+ <button onclick="stopLive()" style="background:#b83e59">Durdur</button>
+ <p class="small" id="liveStatus">TikTok bağlantısı henüz kurulmadı.</p>
+</div>
+<p class="small">Lina AI LIVE • Kontrol Paneli</p>
+</div>
+
+<script>
+const voices=document.getElementById("voices");
+const status=document.getElementById("status");
+const chat=document.getElementById("chat");
+let running=false;
+
+function loadVoices(){
+ voices.innerHTML="";
+ const list=speechSynthesis.getVoices();
+ list.filter(v=>v.lang.toLowerCase().startsWith("tr"))
+ .forEach(v=>{
+  const o=document.createElement("option");
+  o.value=v.name;o.textContent=v.name;
+  voices.appendChild(o);
+ });
+ if(!voices.options.length){
+  voices.innerHTML='<option>Varsayılan ses</option>';
+ }
+}
+speechSynthesis.onvoiceschanged=loadVoices;
+loadVoices();
+
+function speak(text){
+ if(!("speechSynthesis" in window)){
+  alert("Tarayıcın ses özelliğini desteklemiyor.");return;
+ }
+ speechSynthesis.cancel();
+ const u=new SpeechSynthesisUtterance(text);
+ const v=speechSynthesis.getVoices().find(x=>x.name===voices.value);
+ if(v)u.voice=v;
+ u.lang="tr-TR";
+ u.rate=1;
+ u.pitch=1.08;
+ speechSynthesis.speak(u);
+}
+
+function testVoice(){
+ speak("Merhaba! Ben Lina. Canlı yayına hoş geldin. Seninle tanıştığıma çok sevindim.");
+}
+
+function addMessage(name,text){
+ const d=document.createElement("div");
+ d.className="message";
+ d.textContent=name+": "+text;
+ chat.appendChild(d);
+ chat.scrollTop=chat.scrollHeight;
+}
+
+function answer(text){
+ const t=text.toLocaleLowerCase("tr-TR");
+ let reply;
+ if(t.includes("merhaba")||t.includes("selam"))
+  reply="Merhaba! Hoş geldin. Nasılsın?";
+ else if(t.includes("fal"))
+  reply="Hadi kahve falı konuşalım! Fincanında neler var?";
+ else if(t.includes("nasılsın"))
+  reply="Çok iyiyim, seninle sohbet etmek güzel!";
+ else if(t.includes("şarkı")||t.includes("müzik"))
+  reply="Bugün müzik ve eğlence konuşalım!";
+ else
+  reply="Çok güzel bir konu! Biraz daha anlatsana, seni dinliyorum.";
+ addMessage("Lina",reply);
+ speak(reply);
+}
+
+function sendMessage(){
+ const input=document.getElementById("topic");
+ const value=input.value.trim();
+ if(!value)return;
+ addMessage("Sen",value);
+ input.value="";
+ answer(value);
+}
+
+function listen(){
+ const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!SR){
+  alert("Sesli tanıma bu tarayıcıda desteklenmiyor. Chrome kullan.");
+  return;
+ }
+ const r=new SR();
+ r.lang="tr-TR";
+ r.onresult=e=>{
+  const value=e.results[0][0].transcript;
+  addMessage("Sen",value);
+  answer(value);
+ };
+ r.start();
+}
+
+function startLive(){
+ running=true;
+ status.textContent="● Lina aktif";
+ document.getElementById("liveStatus").textContent=
+ "Lina'nın sohbet paneli çalışıyor. TikTok yayını henüz bağlı değil.";
+ speak("Merhaba arkadaşlar! Ben Lina. Yayınımıza hoş geldiniz!");
+}
+
+function stopLive(){
+ running=false;
+ speechSynthesis.cancel();
+ status.textContent="● Sistem durduruldu";
+ document.getElementById("liveStatus").textContent="Lina durduruldu.";
+}
+</script>
+</body>
+  </html>
