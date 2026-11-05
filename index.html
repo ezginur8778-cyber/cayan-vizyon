@@ -3,31 +3,55 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Çayan Vizyon | Dizi ve Film Dünyası</title>
-<meta name="description" content="Çayan Vizyon: Netflix yapımları, K-Drama ve yabancı diziler için keşif ve izleme rehberi.">
+<meta name="description" content="Çayan Vizyon ile Türk dizileri, Netflix yapımları, K-Drama ve yabancı dizileri keşfet. Dizi bilgileri, oyuncular, fragmanlar ve ücretsiz yasal izleme seçenekleri.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://ezginur8778-cyber.github.io/cayan-vizyon/">
+<meta name="theme-color" content="#090909">
+<meta property="og:title" content="Çayan Vizyon">
+<meta property="og:description" content="Dizi ve film dünyasını keşfet.">
+<meta property="og:type" content="website">
+<script type="application/ld+json">
+{
+ "@context":"https://schema.org",
+ "@type":"WebSite",
+ "name":"Çayan Vizyon",
+ "url":"https://ezginur8778-cyber.github.io/cayan-vizyon/",
+ "inLanguage":"tr-TR"
+}
+</script>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#090909;color:#fff;font-family:Arial,sans-serif}
-header{background:#151515;padding:20px 5%;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;border-bottom:2px solid #e50914}
-.logo{font-size:25px;font-weight:bold;color:#e50914}
-nav a{color:#fff;text-decoration:none;margin:8px;font-size:14px}
-.hero{padding:65px 7%;background:linear-gradient(90deg,#160607,#111);text-align:center}
-.hero h1{font-size:36px;margin:0 0 12px}
-.hero p{color:#bbb}
-.search{width:90%;max-width:500px;padding:14px;border:1px solid #444;border-radius:7px;background:#222;color:white;margin-top:15px}
+header{background:#111;padding:18px 5%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;border-bottom:2px solid #e50914}
+.logo{font-size:27px;font-weight:900;color:#e50914}
+nav a{color:#ddd;text-decoration:none;margin:8px;font-size:14px}
+.hero{padding:65px 7%;background:linear-gradient(90deg,#36080d,#111);min-height:290px}
+.hero small{color:#ff5b63}
+.hero h1{font-size:42px;margin:15px 0}
+.hero p{color:#ccc;max-width:550px;line-height:1.6}
+.search{width:100%;max-width:550px;padding:15px;border-radius:7px;background:#222;border:1px solid #555;color:white;font-size:16px}
 main{padding:25px 5%}
-h2{border-left:4px solid #e50914;padding-left:12px}
+h2{font-size:23px;border-left:4px solid #e50914;padding-left:12px;margin-top:35px}
 .categories{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}
-.categories button{background:#222;color:white;border:1px solid #444;padding:10px 17px;border-radius:20px;cursor:pointer}
-.categories button:hover{background:#e50914}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:16px}
-.card{background:#181818;border-radius:9px;overflow:hidden;border:1px solid #292929}
-.poster{height:190px;background:linear-gradient(145deg,#3a1014,#171717);display:flex;align-items:center;justify-content:center;font-size:42px}
+.categories button{background:#222;color:white;border:1px solid #444;padding:11px 17px;border-radius:25px;cursor:pointer}
+.categories button:hover,.categories button.active{background:#e50914}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:17px}
+.card{background:#181818;border-radius:9px;overflow:hidden;border:1px solid #292929;transition:.2s}
+.card:hover{transform:translateY(-4px);border-color:#e50914}
+.poster{height:210px;display:flex;align-items:center;justify-content:center;font-size:55px;background:linear-gradient(145deg,#50131a,#171717)}
+.p2{background:linear-gradient(145deg,#17334b,#171717)}
+.p3{background:linear-gradient(145deg,#3b2755,#171717)}
+.p4{background:linear-gradient(145deg,#625020,#171717)}
 .card h3{font-size:16px;margin:12px}
-.card p{font-size:13px;color:#aaa;margin:0 12px 12px}
-.card a{display:inline-block;color:#fff;background:#e50914;text-decoration:none;padding:9px 12px;margin:0 12px 14px;border-radius:5px;font-size:13px}
-footer{text-align:center;color:#888;padding:30px;border-top:1px solid #333;margin-top:30px}
+.card p{font-size:13px;color:#aaa;margin:0 12px 12px;line-height:1.5}
+.tag{font-size:11px;color:#ff747b;margin:0 12px}
+.card button{background:#e50914;color:white;border:0;padding:10px 12px;margin:0 12px 14px;border-radius:5px;cursor:pointer}
+.info{background:#171717;padding:22px;border-radius:10px;margin-top:30px;line-height:1.7;color:#ccc}
+.info a{color:#ff737b}
+footer{text-align:center;color:#888;padding:30px;border-top:1px solid #333;margin-top:40px;font-size:13px}
+@media(max-width:600px){.hero h1{font-size:31px}nav{margin-top:12px}}
 </style>
 </head>
 <body>
@@ -37,54 +61,99 @@ footer{text-align:center;color:#888;padding:30px;border-top:1px solid #333;margi
 <a href="#anasayfa">Ana Sayfa</a>
 <a href="#diziler">Diziler</a>
 <a href="#kategoriler">Kategoriler</a>
+<a href="#hakkimizda">Hakkımızda</a>
 </nav>
 </header>
+
 <section class="hero" id="anasayfa">
-<h1>Dizi Dünyasını Keşfet</h1>
-<p>Yeni diziler, popüler yapımlar ve unutulmaz hikâyeler.</p>
-<input class="search" id="search" placeholder="Dizi veya kategori ara..." oninput="filterCards()">
+<small>DİZİ VE FİLM KEŞİF PLATFORMU</small>
+<h1>Yeni Dünyalar Keşfet.</h1>
+<p>Sevdiğin dizileri keşfet, oyuncuları tanı, fragmanları izle ve yeni hikâyeler bul.</p>
+<input class="search" id="search" placeholder="Dizi, oyuncu veya kategori ara..." oninput="filterCards()">
 </section>
+
 <main id="diziler">
 <h2 id="kategoriler">Kategoriler</h2>
 <div class="categories">
-<button onclick="showCategory('all')">Tümü</button>
-<button onclick="showCategory('Netflix')">Netflix</button>
-<button onclick="showCategory('K-Drama')">K-Drama</button>
-<button onclick="showCategory('Yabancı')">Yabancı Diziler</button>
-<button onclick="showCategory('Yeni')">Yeni Yapımlar</button>
+<button class="active" onclick="showCategory('all',this)">Tümü</button>
+<button onclick="showCategory('Netflix',this)">Netflix</button>
+<button onclick="showCategory('K-Drama',this)">K-Drama</button>
+<button onclick="showCategory('Türk',this)">Türk Dizileri</button>
+<button onclick="showCategory('Yabancı',this)">Yabancı Diziler</button>
 </div>
-<h2>Keşfet</h2>
+
+<h2>Öne Çıkan Diziler</h2>
 <div class="cards" id="cards">
+
 <article class="card" data-category="Netflix">
 <div class="poster">🎬</div>
-<h3>Netflix Yapımları</h3>
-<p>Popüler Netflix dizilerini keşfet.</p>
-<a href="https://www.netflix.com/tr/" target="_blank" rel="noopener">Netflix'i keşfet</a>
+<div class="tag">NETFLIX</div>
+<h3>Stranger Things</h3>
+<p>Gizem, bilim kurgu ve macera.</p>
+<button onclick="details('Stranger Things','Gizemli olaylar ve doğaüstü güçler etrafında gelişen bilim kurgu hikâyesi.','Bilim kurgu, gizem')">Detaylar</button>
 </article>
+
+<article class="card" data-category="Netflix">
+<div class="poster p2">🦑</div>
+<div class="tag">NETFLIX</div>
+<h3>Squid Game</h3>
+<p>Hayatta kalma mücadelesi.</p>
+<button onclick="details('Squid Game','Büyük para ödülü için tehlikeli oyunlara katılan insanların hikâyesi.','Gerilim, dram')">Detaylar</button>
+</article>
+
 <article class="card" data-category="K-Drama">
-<div class="poster">🌸</div>
-<h3>K-Drama</h3>
-<p>Kore dizileri dünyasına göz at.</p>
-<a href="https://www.viki.com/" target="_blank" rel="noopener">Viki'yi keşfet</a>
+<div class="poster p3">🌸</div>
+<div class="tag">K-DRAMA</div>
+<h3>Crash Landing on You</h3>
+<p>Güney Kore romantik drama dizisi.</p>
+<button onclick="details('Crash Landing on You','Beklenmedik bir olayla Kuzey Koreye düşen bir kadının hikâyesi.','Romantik, dram')">Detaylar</button>
 </article>
+
+<article class="card" data-category="K-Drama">
+<div class="poster p4">🌙</div>
+<div class="tag">K-DRAMA</div>
+<h3>The Glory</h3>
+<p>Geçmişten gelen bir intikam hikâyesi.</p>
+<button onclick="details('The Glory','Geçmişte yaşadığı zorbalığın hesabını sormak isteyen bir kadının hikâyesi.','Gerilim, dram')">Detaylar</button>
+</article>
+
+<article class="card" data-category="Türk">
+<div class="poster p2">🎭</div>
+<div class="tag">TÜRK DİZİSİ</div>
+<h3>Türk Dizileri</h3>
+<p>Türkiye'den sevilen yapımları keşfet.</p>
+<button onclick="details('Türk Dizileri','Türk televizyon dünyasından dram, komedi ve polisiye yapımlar.','Dram, komedi')">Detaylar</button>
+</article>
+
 <article class="card" data-category="Yabancı">
-<div class="poster">🌍</div>
+<div class="poster p3">🌍</div>
+<div class="tag">YABANCI</div>
 <h3>Yabancı Diziler</h3>
-<p>Dünyadan farklı hikâyeler keşfet.</p>
-<a href="https://www.justwatch.com/tr" target="_blank" rel="noopener">Nerede izlenir?</a>
+<p>Dünyanın farklı ülkelerinden hikâyeler.</p>
+<button onclick="details('Yabancı Diziler','Farklı ülkelerden bilim kurgu, macera, dram ve polisiye diziler.','Çeşitli türler')">Detaylar</button>
 </article>
-<article class="card" data-category="Yeni">
-<div class="poster">✨</div>
-<h3>Yeni Yapımlar</h3>
-<p>Yeni çıkan film ve dizileri araştır.</p>
-<a href="https://www.justwatch.com/tr" target="_blank" rel="noopener">Yeni yapımları bul</a>
-</article>
+
 </div>
+
+<section class="info" id="details" hidden>
+<h2 id="detailTitle"></h2>
+<p id="detailDescription"></p>
+<p id="detailGenre"></p>
+<a id="trailer" href="https://www.youtube.com/" target="_blank" rel="noopener">Resmî fragmanları bul</a>
+</section>
+
+<section class="info" id="hakkimizda">
+<h2>Çayan Vizyon Hakkında</h2>
+<p>Çayan Vizyon, Türk dizileri, Netflix yapımları, K-Drama ve yabancı diziler hakkında bilgi edinmek isteyenler için hazırlanmış bağımsız bir keşif platformudur.</p>
+<p>Dizi konuları, oyuncular, fragmanlar ve yasal izleme seçenekleri sunmayı amaçlar. Netflix veya başka bir yayın hizmetiyle bağlantılı değildir.</p>
+</section>
 </main>
+
 <footer>
 <p>Çayan Vizyon © 2026</p>
-<p>Bağımsız dizi ve film keşif rehberi. Netflix ile bağlantılı değildir.</p>
+<p>Bağımsız dizi ve film keşif rehberi.</p>
 </footer>
+
 <script>
 function filterCards(){
  const q=document.getElementById('search').value.toLocaleLowerCase('tr');
@@ -92,11 +161,21 @@ function filterCards(){
  card.style.display=card.innerText.toLocaleLowerCase('tr').includes(q)?'block':'none';
  });
 }
-function showCategory(category){
+function showCategory(category,button){
+ document.querySelectorAll('.categories button').forEach(b=>b.classList.remove('active'));
+ button.classList.add('active');
  document.querySelectorAll('.card').forEach(card=>{
  card.style.display=category==='all'||card.dataset.category===category?'block':'none';
  });
  document.getElementById('search').value='';
+}
+function details(title,description,genre){
+ document.getElementById('detailTitle').innerText=title;
+ document.getElementById('detailDescription').innerText=description;
+ document.getElementById('detailGenre').innerText='Tür: '+genre;
+ document.getElementById('trailer').href='https://www.youtube.com/results?search_query='+encodeURIComponent(title+' official trailer');
+ document.getElementById('details').hidden=false;
+ document.getElementById('details').scrollIntoView({behavior:'smooth'});
 }
 </script>
 </body>
