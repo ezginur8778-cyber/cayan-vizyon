@@ -189,3 +189,41 @@ function closeDetails(){
 </script>
 </body>
 </html>
+
+<style>
+.poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+</style>
+
+<script>
+document.querySelectorAll('.card').forEach(async card => {
+  const title = card.querySelector('h3')?.textContent.trim();
+  const poster = card.querySelector('.poster');
+  if (!title || !poster) return;
+
+  try {
+    const response = await fetch(
+      'https://api.tvmaze.com/singlesearch/shows?q=' +
+      encodeURIComponent(title)
+    );
+    if (!response.ok) return;
+
+    const show = await response.json();
+    const image = show.image?.original || show.image?.medium;
+    if (!image) return;
+
+    poster.innerHTML = '';
+    const img = document.createElement('img');
+    img.src = image;
+    img.alt = title + ' dizi afişi';
+    img.loading = 'lazy';
+    poster.appendChild(img);
+  } catch (error) {
+    console.log('Afiş yüklenemedi:', title);
+  }
+});
+</script>
