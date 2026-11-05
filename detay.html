@@ -1,95 +1,137 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="index,follow">
-<title>Dizi Detayı | Çayan Vizyon</title>
+<title>Dizi Detayları | Çayan Vizyon</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#090909;color:white;font-family:Arial,sans-serif}
-header{padding:20px;background:#111;border-bottom:2px solid #e50914}
-.logo{color:#e50914;font-size:24px;font-weight:bold;text-decoration:none}
-main{max-width:1000px;margin:auto;padding:25px}
-.hero{display:grid;grid-template-columns:280px 1fr;gap:25px}
-.poster{width:100%;border-radius:10px;max-height:430px;object-fit:cover}
-h1{font-size:32px}
-p{color:#ccc;line-height:1.7}
-.info{background:#191919;padding:18px;border-radius:10px;margin-top:25px}
-a.button{display:inline-block;background:#e50914;color:white;text-decoration:none;padding:12px 18px;border-radius:6px;margin-top:10px}
-.back{color:#ff747b;text-decoration:none}
-@media(max-width:600px){
-.hero{grid-template-columns:1fr}
-.poster{max-width:240px}
-h1{font-size:25px}
-}
+body{margin:0;background:#101010;color:white;font-family:Arial,sans-serif}
+header{background:#1b1b1b;padding:20px;text-align:center;border-bottom:2px solid #e50914}
+header a{color:white;text-decoration:none;font-size:25px;font-weight:bold}
+main{max-width:1000px;margin:auto;padding:20px}
+button{background:#e50914;color:white;border:0;padding:12px 18px;border-radius:6px;cursor:pointer}
+.hero{display:flex;gap:22px;flex-wrap:wrap;margin-top:25px}
+.poster{width:220px;max-width:100%;border-radius:10px;object-fit:cover}
+.info{flex:1;min-width:240px}
+h1{margin-top:0}
+h2{border-bottom:1px solid #444;padding-bottom:10px;margin-top:35px}
+.muted{color:#bbb;line-height:1.6}
+.cast{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:15px}
+.person{background:#202020;padding:10px;border-radius:8px;text-align:center}
+.person img{width:100%;height:150px;object-fit:cover;border-radius:6px}
+.episode{background:#202020;margin:8px 0;padding:12px;border-radius:6px}
+a{color:#ff7777}
+.error{color:#ff7777}
 </style>
 </head>
 <body>
-<header>
-<a class="logo" href="index.html">ÇAYAN VİZYON</a>
-</header>
+<header><a href="index.html">ÇAYAN VİZYON</a></header>
 <main>
-<a class="back" href="index.html">← Ana sayfaya dön</a>
-<section class="hero">
-<img class="poster" id="poster" alt="Dizi afişi">
-<div>
-<h1 id="title">Dizi yükleniyor...</h1>
-<p id="summary">Dizi bilgileri hazırlanıyor.</p>
-<p id="genre"></p>
-<p id="date"></p>
-<p id="status"></p>
-<a class="button" id="trailer" target="_blank" rel="noopener">Fragmanı bul</a>
-</div>
-</section>
-<section class="info">
-<h2>Oyuncu Kadrosu</h2>
-<p id="cast">Oyuncular yükleniyor...</p>
-</section>
-<section class="info">
-<h2>Sezon ve Bölüm Bilgileri</h2>
-<p id="episodes">Bilgiler yükleniyor...</p>
-</section>
+<button onclick="history.back()">← Geri dön</button>
+<div id="content">Dizi yükleniyor...</div>
 </main>
+
 <script>
 const params=new URLSearchParams(location.search);
-const name=params.get('dizi')||'Stranger Things';
-document.title=name+' | Çayan Vizyon';
-document.getElementById('title').textContent=name;
-document.getElementById('trailer').href=
-'https://www.youtube.com/results?search_query='+encodeURIComponent(name+' official trailer');
+const title=params.get("dizi");
+
+const content=document.getElementById("content");
+
+function clean(text){
+  const div=document.createElement("div");
+  div.innerHTML=text||"";
+  return div.textContent||div.innerText||"";
+}
 
 async function loadShow(){
-try{
-const response=await fetch('https://api.tvmaze.com/singlesearch/shows?q='+encodeURIComponent(name)+'&embed[]=cast&embed[]=episodes');
-if(!response.ok)throw new Error('Dizi bulunamadı');
-const show=await response.json();
-document.getElementById('title').textContent=show.name;
-document.getElementById('summary').textContent=(show.summary||'Dizi özeti henüz eklenmedi.').replace(/<[^>]*>/g,'');
-document.getElementById('genre').textContent='Tür: '+(show.genres||[]).join(', ');
-document.getElementById('date').textContent='Başlangıç: '+(show.premiered||'Bilinmiyor');
-document.getElementById('status').textContent='Durum: '+(show.status||'Bilinmiyor');
-const poster=document.getElementById('poster');
+  if(!title){
+    content.innerHTML="<p class='error'>Dizi adı bulunamadı.</p>";
+    return;
+  }
 
-poster.src=show.image?.original || show.image?.medium || '';
-poster.style.display=poster.src ? 'block' : 'none';
+  try{
+    const response=await fetch(
+      "https://api.tvmaze.com/singlesearch/shows?q="+encodeURIComponent(title)+"&embed[]=cast&embed[]=episodes"
+    );
 
-poster.onerror=function(){
-  this.style.display='none';
-};
-document.getElementById('poster').alt='Afiş bulunamadı';
+    if(!response.ok) throw new Error("Dizi bilgisi bulunamadı.");
+
+    const show=await response.json();
+    const image=show.image?.original||show.image?.medium||"";
+    const cast=show._embedded?.cast||[];
+    const episodes=show._embedded?.episodes||[];
+
+    content.innerHTML=`
+      <div class="hero">
+        ${image?`<img class="poster" src="${image}" alt="${show.name}">`:""}
+        <div class="info">
+          <h1>${show.name}</h1>
+          <p class="muted">${clean(show.summary)||"Bu dizi için açıklama bulunmuyor."}</p>
+          <p><b>Tür:</b> ${(show.genres||[]).join(", ")||"Belirtilmemiş"}</p>
+          <p><b>İlk yayın:</b> ${show.premiered||"Bilinmiyor"}</p>
+          <p><b>Durum:</b> ${show.status||"Bilinmiyor"}</p>
+          <p><b>IMDB puanı:</b> ${show.rating?.average||"Henüz yok"}</p>
+          <p><b>Toplam bölüm:</b> ${episodes.length}</p>
+          <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(show.name+" resmi fragman")}" target="_blank">Fragmanı bul ▶</a>
+        </div>
+      </div>
+
+      <h2>Oyuncu Kadrosu</h2>
+      <div class="cast" id="cast"></div>
+
+      <h2>Sezon ve Bölüm Bilgileri</h2>
+      <div id="episodes"></div>
+    `;
+
+    const castArea=document.getElementById("cast");
+    if(cast.length){
+      cast.slice(0,30).forEach(item=>{
+        const person=document.createElement("div");
+        person.className="person";
+        const photo=item.person.image?.medium||"";
+        person.innerHTML=`
+          ${photo?`<img src="${photo}" alt="">`:""}
+          <p><b>${item.person.name}</b></p>
+          <p class="muted">${item.character.name||""}</p>
+        `;
+        castArea.appendChild(person);
+      });
+    }else{
+      castArea.textContent="Oyuncu bilgisi bulunamadı.";
+    }
+
+    const episodeArea=document.getElementById("episodes");
+    if(episodes.length){
+      const seasons={};
+      episodes.forEach(ep=>{
+        const season=ep.season||1;
+        if(!seasons[season]) seasons[season]=[];
+        seasons[season].push(ep);
+      });
+
+      Object.keys(seasons).sort((a,b)=>a-b).forEach(season=>{
+        const heading=document.createElement("h3");
+        heading.textContent=season+". Sezon";
+        episodeArea.appendChild(heading);
+
+        seasons[season].forEach(ep=>{
+          const div=document.createElement("div");
+          div.className="episode";
+          div.textContent="Bölüm "+ep.number+" – "+ep.name+
+            (ep.airdate?" ("+ep.airdate+")":"");
+          episodeArea.appendChild(div);
+        });
+      });
+    }else{
+      episodeArea.textContent="Bölüm bilgisi bulunamadı.";
+    }
+
+  }catch(error){
+    content.innerHTML="<h2>Dizi bilgileri yüklenemedi.</h2><p class='error'>Bağlantını kontrol edip tekrar deneyebilirsin.</p>";
+  }
 }
-const cast=show._embedded?.cast||[];
-document.getElementById('cast').textContent=cast.length?cast.slice(0,15).map(x=>x.person.name+' ('+x.character.name+')').join(', '):'Oyuncu bilgisi bulunamadı.';
-const episodes=show._embedded?.episodes||[];
-document.getElementById('episodes').textContent=episodes.length?'Toplam '+episodes.length+' bölüm bilgisi bulundu.': 'Bölüm bilgisi bulunamadı.';
-}catch(error){
-document.getElementById('summary').textContent='Bu dizi için otomatik bilgi bulunamadı.';
-document.getElementById('cast').textContent='Oyuncu bilgisi alınamadı.';
-document.getElementById('episodes').textContent='Bölüm bilgisi alınamadı.';
-}
-}
+
 loadShow();
 </script>
 </body>
